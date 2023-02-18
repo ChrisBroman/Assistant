@@ -7,13 +7,10 @@ import wave
 
 load_dotenv()
     
-def text_to_speech(string):
-    print(string)
-    os.system('echo "%s" | festival --tts' % string)
-    
 def get_audio():
     audio = pyaudio.PyAudio()
     os.system('clear')
+    print('Listening...')
     stream = audio.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
     frames = []
     
@@ -35,6 +32,7 @@ def get_audio():
     sound_file.close()
     
 def transcribe_audio():
+    os.system('clear')
     model = whisper.load_model('tiny')
     result = model.transcribe('myrecording.wav', fp16=False, language='English')
     text = result['text']
@@ -54,6 +52,10 @@ def ask_ai(text):
     )
     result = response['choices'][0]['text']
     return result.replace("'", "\'")
+
+def text_to_speech(string):
+    print(string)
+    os.system('echo "%s" | festival --tts' % string)
 
 def main():
     get_audio()
